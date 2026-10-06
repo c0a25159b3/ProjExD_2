@@ -30,6 +30,17 @@ def gameover(screen: pg.Surface) -> None:
     time.sleep(5)
     return game
 
+
+def init_bb_imgs() -> tuple[list[pg.Surfane], list[int]]:
+    
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0,0), (10*r, 10*r), 10*r)
+        bb_imgs.append(bb_img)
+        bb_accs = [a for a in range(1, 11)]
+    return bb_imgs, bb_accs
+    
+
 def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
     """
     引数：こうかとん又は爆弾のRect
@@ -61,6 +72,10 @@ def main():
     bb_img.set_colorkey((0, 0, 0))
     clock = pg.time.Clock()
     tmr = 0
+
+    avx = vx*bb_accs[min(tmr//500, 9)]
+    bb= bb_accs[min(tmr//500, 9)]
+    bb_rct.eidth = bb_img.get_rect().width
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
