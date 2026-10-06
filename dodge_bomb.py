@@ -30,6 +30,7 @@ def gameover(screen: pg.Surface) -> None:
     time.sleep(5)
     return game
 
+
 '''
 def init_bb_imgs() -> tuple[list[pg.Surfane], list[int]]:
     
@@ -54,7 +55,6 @@ def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
     if rect.top < 0 or HEIGHT < rect.bottom:  # 縦方向判定
         tate = False
     return yoko, tate
-
 
 
 def main():
