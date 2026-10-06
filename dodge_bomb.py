@@ -1,22 +1,38 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
 WIDTH, HEIGHT = 1100, 650
 DEKTA = {
-    pg.K_UP: (0,-5), 
-    pg.K_DOWN: (0,+5), 
+    pg.K_UP: (0, -5), 
+    pg.K_DOWN: (0, +5), 
     pg.K_LEFT: (-5, 0), 
     pg.K_RIGHT: (+5, 0),
     }
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+def gameover(screen: pg.Surface) -> None:
+    #screen = pg.Surface((WIDTH, HEIGHT))
+    game = pg.Surface((WIDTH, HEIGHT))
+    #game.set_colorkey((0, 0, 0))
+    pg.draw.rect(game,(0, 0, 0),(0, 0, WIDTH, HEIGHT)) 
+    fonto = pg.font.Font(None, 90)
+    txt = fonto.render("Game Over",True,(255, 255, 255))
+    game.blit(txt, [350, 300])
+    k8_png = pg.image.load("fig/8.png")  # 1-4のこうかとん
+    game.blit(k8_png, [300, 300])
+    game.blit(k8_png, [700, 300])
+    screen.blit(game, [0, 0])
+    pg.display.update()
+    time.sleep(5)
+    return game
 
 def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
     """
-    引数：交換トン又は爆弾のRect
+    引数：こうかとん又は爆弾のRect
     戻り値：タプル（横方向判定、縦方向判定）
     画面内ならTrue　画面外ならFalse
     """
@@ -27,21 +43,6 @@ def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
-def gameover(screen: pg.Surface) -> None:
-    #screen = pg.Surface((WIDTH, HEIGHT))
-    game = pg.Surface((WIDTH, HEIGHT))
-    #game.set_colorkey((0, 0, 0))
-    pg.draw.rect(game,(0, 0, 0),(0, 0, WIDTH, HEIGHT)) 
-    fonto = pg.font.Font(None, 80)
-    txt = fonto.render("game over",True,(255 ,255 ,255))
-    game.blit(txt, [300, 200])
-    k8_png = pg.image.load("fig/8.png")  # 1-4のこうかとん
-    game.blit(k8_png, game)
-    screen.blit(game,[0, 0])
-    pg.display.update()
-    time = pg.time.Clock()
-    time.sleep(5)
-    return game
 
 
 def main():
@@ -58,7 +59,6 @@ def main():
     bb_rct.centery = (random.randint(0, HEIGHT))
     vx, vy = +5, -5
     bb_img.set_colorkey((0, 0, 0))
-    bg_img.set_colorkey((0, 0, 0))
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -97,6 +97,7 @@ def main():
         if not tate:  # tate == False
             vy *= -1
         screen.blit(bb_img, bb_rct)  # 練習2：爆弾
+        pg.display.update()
         tmr += 1
         clock.tick(50)
 
