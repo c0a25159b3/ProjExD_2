@@ -71,7 +71,6 @@ def main():
             gameover(screen)
             return
         
-        
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         # if key_lst[pg.K_UP]:
