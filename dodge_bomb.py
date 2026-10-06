@@ -27,10 +27,27 @@ def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+def gameover(screen: pg.Surface) -> None:
+    #screen = pg.Surface((WIDTH, HEIGHT))
+    game = pg.Surface((WIDTH, HEIGHT))
+    #game.set_colorkey((0, 0, 0))
+    pg.draw.rect(game,(0, 0, 0),(0, 0, WIDTH, HEIGHT)) 
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("game over",True,(255 ,255 ,255))
+    game.blit(txt, [300, 200])
+    k8_png = pg.image.load("fig/8.png")  # 1-4のこうかとん
+    game.blit(k8_png, game)
+    screen.blit(game,[0, 0])
+    pg.display.update()
+    time = pg.time.Clock()
+    time.sleep(5)
+    return game
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    bg_img = pg.image.load("fig/pg_bg.jpg")    
+    bg_img = pg.image.load("fig/pg_bg.jpg") 
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
@@ -40,7 +57,8 @@ def main():
     bb_rct.centerx = (random.randint(0, WIDTH))
     bb_rct.centery = (random.randint(0, HEIGHT))
     vx, vy = +5, -5
-    bb_img.set_colorkey((0, 0 , 0))
+    bb_img.set_colorkey((0, 0, 0))
+    bg_img.set_colorkey((0, 0, 0))
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -50,7 +68,7 @@ def main():
         screen.blit(bg_img, [0, 0]) 
 
         if kk_rct.colliderect(bb_rct):  # 練習4；kkとbbが重なっていたら
-            print("game over")
+            gameover(screen)
             return
         
         
@@ -80,7 +98,6 @@ def main():
         if not tate:  # tate == False
             vy *= -1
         screen.blit(bb_img, bb_rct)  # 練習2：爆弾
-        pg.display.update()
         tmr += 1
         clock.tick(50)
 
